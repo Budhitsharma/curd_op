@@ -1,0 +1,190 @@
+{% extends 'myapp/basic.html' %}
+
+{% block body %} 
+
+<h2 class='text-center alert alert-info'>Update Form</h2>
+
+<div class="row">
+    <div class="col-sm-6">
+
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form.as_p}}
+        <input type="submit" class="btn btn-success" value="Update" id="update_button">
+        <a href="{% url 'index' %}" class="btn btn-info">Back</a>
+        </form>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    $(document).ready(function() {
+        function showError(field, message) {
+            field.parent().find('.error-message').remove();
+            field.after('<p class="error-message" style="color: red;">' + message + '</p>');
+        }
+        function hideError(field) {
+            field.parent().find('.error-message').remove();
+        }
+        function validateField(field, errorMessage) {
+            var value = field.val();
+            if (value.trim() === '') {
+              showError(field, errorMessage);
+              field.focus();
+              return false;
+            }
+            return true;
+        }
+        function isValidDate(dateString) {
+            var regexDate = /^\d{4}\/\d{2}\/\d{2}$/;
+            console.log(regexDate.test(dateString));
+            return regexDate.test(dateString);           
+        }
+
+        $('#id_email').on('input', function() {
+            var emailField = $(this);
+            var emailValue = emailField.val();     
+            hideError(emailField); 
+            if (!/^\S+@\S+\.\S+$/.test(emailValue)) {
+                showError(emailField, "Please enter a valid email address.");
+            }
+        });    
+        
+        $('#id_contact').on('input', function() {
+            var contactField = $(this);
+            var contactValue = contactField.val();     
+            hideError(contactField);     
+            if (!/^\d{10}$/.test(contactValue)) {
+                showError(contactField, "Please enter a valid 10-digit contact number.");
+            }
+        });
+    
+        $('#id_aadhar_no').on('input', function() {
+            var aadharField = $(this);
+            var aadharValue = aadharField.val();
+            hideError(aadharField);     
+            if (!/^\d{12}$/.test(aadharValue)) {
+                showError(aadharField, "Please enter a valid 12-digit Aadhar number.");
+            }
+        });
+
+        $('#id_pan_no').on('input', function() {
+            var panField = $(this);
+            var panValue = panField.val();
+            hideError(panField);
+            if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(panValue)) {
+            showError(panField, "Please enter a valid PAN card number.");
+            } 
+        });
+        
+        $('#id_skype_id').on('input', function() {
+            var skypeField = $(this);
+            var skypeValue = skypeField.val();
+            hideError(skypeField);
+            if (!/^[a-zA-Z0-9_.-]+$/.test(skypeValue)) {
+            showError(skypeField, "Please enter a valid Skype ID.");
+           }
+        });
+
+        $('#id_linkedin_id').on('input', function() {
+            var linkedinField = $(this);
+            var linkedinValue = linkedinField.val();
+            hideError(linkedinField);
+            if (!/^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/.test(linkedinValue)) {
+            showError(linkedinField, "Please enter a valid LinkedIn profile URL.");
+            }
+        });
+       
+        $('#id_ifsc_code').on('input', function() {
+            var ifscField = $(this);
+            var ifscValue = ifscField.val();
+            hideError(ifscField);
+            if (!/^[A-Za-z]{4}[0-9]{7}$/.test(ifscValue)) {
+            showError(ifscField, "Please enter a valid IFSC code.First four Alphabetic and last seven is numeric.");
+            }
+        });
+
+
+        $('#update_button').on('click', function(event) {
+            var fieldsToValidate = [
+              { field: $('#id_name'), errorMessage: "Please enter your name." },
+              { field: $('#id_gender'), errorMessage: "Please select your Gender." },
+              { field: $('#id_birth_date'), errorMessage: "Please enter your Date of Birth." },
+              { field: $('#id_join_date'), errorMessage: "Please enter your Join Date." },
+              { field: $('#id_qualification'), errorMessage: "Please enter your Qualification." },
+              { field: $('#id_technology'), errorMessage: "Please enter your Technology." },
+              { field: $('#id_perv_company'), errorMessage: "Please enter your pervious company." },
+              { field: $('#id_experience'), errorMessage: "Please enter your Experience." },
+              { field: $('#id_acc_no'), errorMessage: "Please enter your Account Number." },
+              { field: $('#id_bank_name'), errorMessage: "Please enter your Bank Name." },
+              { field: $('#id_acc_name'), errorMessage: "Please enter your Account Name." }, 
+            ];
+
+            var isValid = true;
+            for (var i = 0; i < fieldsToValidate.length; i++) {
+              var field = fieldsToValidate[i].field;
+              var errorMessage = fieldsToValidate[i].errorMessage;
+              isValid = validateField(field, errorMessage) && isValid;
+            }
+
+            if (!isValid) {
+              event.preventDefault();
+            }
+
+            var emailField = $('#id_email'); 
+            var contactField = $('#id_contact');
+            var aadharField = $('#id_aadhar_no');
+            var panField = $('#id_pan_no');
+            var skypeField = $('#id_skype_id');
+            var linkedinField = $('#id_linkedin_id');
+            var ifscField = $('#id_ifsc_code');
+
+            var emailValue = emailField.val();
+            var contactValue = contactField.val();
+            var aadharValue = aadharField.val();
+            var panValue = panField.val();
+            var skypeValue = skypeField.val();
+            var linkedinValue = linkedinField.val();
+            var ifscValue = ifscField.val();
+
+            if (!/^\S+@\S+\.\S+$/.test(emailValue)) {
+                showError(emailField, "Please enter a valid email address.");
+                emailField.focus();
+                event.preventDefault(); 
+            }
+            if (!/^\d{10}$/.test(contactValue)) {
+                showError(contactField, "Please enter a valid 10-digit contact number.");
+                contactField.focus();
+                event.preventDefault(); 
+            }
+            if (!/^\d{12}$/.test(aadharValue)) {
+                showError(aadharField, "Please enter a valid 12-digit Aadhar number.");
+                aadharField.focus();
+                event.preventDefault();
+            }
+            if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(panValue)) {
+                showError(panField, "Please enter a valid PAN card number.");
+                panField.focus();
+                event.preventDefault();
+            }
+            if (!/^[a-zA-Z0-9_.-]+$/.test(skypeValue)) {
+                showError(skypeField, "Please enter a valid Skype ID.");
+                skypeField.focus();
+                event.preventDefault();
+            }
+            if (!/^https:\/\/www\.linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/.test(linkedinValue)) {
+                showError(linkedinField, "Please enter a valid LinkedIn profile URL.");
+                linkedinField.focus();
+                event.preventDefault();
+            }
+            if (!/^[A-Za-z]{4}[0-9]{7}$/.test(ifscValue)) {
+                showError(ifscField, "Please enter a valid IFSC code.First four Alphabetic and last seven is numeric.");
+                ifscField.focus();
+                event.preventDefault();
+            }
+        });
+    });   
+</script>
+{% endblock %}

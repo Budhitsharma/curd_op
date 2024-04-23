@@ -1,0 +1,12 @@
+{% extends 'myapp/basic.html' %}
+
+{% block body %} 
+
+<h1 class='text-center alert alert-info'>
+     your Detail Form is Successfully submitted.
+</h1>
+<a href="{% url 'index' %}" class="btn btn-info">Back</a>
+{% endblock %}
+
+
+<!-- <img src="{{ MEDIA_URL }}myapp/images/{{ form.instance.image }}" alt="Uploaded Image"> -->
